@@ -63,8 +63,7 @@ class TfaTrustedBrowser extends TfaBasePlugin implements TfaLoginInterface, TfaV
    * {@inheritdoc}
    */
   public function submitForm(array $form, FormStateInterface &$form_state) {
-    $name = isset($_SERVER['HTTP_USER_AGENT']) ? substr($_SERVER['HTTP_USER_AGENT'], 0, 255) : '';
-    $this->setTrusted($this->generateBrowserId(), $name);
+    $this->setTrusted($this->generateBrowserId());
   }
 
   /**
@@ -95,8 +94,7 @@ class TfaTrustedBrowser extends TfaBasePlugin implements TfaLoginInterface, TfaV
    * @throws \Exception
    */
   public function finalize() {
-    $name = $this->getAgent();
-    $this->setTrusted($this->generateBrowserId(), $name);
+    $this->setTrusted($this->generateBrowserId());
   }
 
   /**
@@ -117,14 +115,14 @@ class TfaTrustedBrowser extends TfaBasePlugin implements TfaLoginInterface, TfaV
    *
    * @param string $id
    *   Trusted browser id.
-   * @param string $name
-   *   The custom browser name.
    */
-  protected function setTrusted($id, $name = '') {
+  protected function setTrusted($id) {
     // Currently broken.
     // Store id for account.
     $records = $this->getUserData('tfa', 'uceap_tfa_trusted_browser', $this->configuration['uid'], $this->userData) ?: [];
     $request_time = \Drupal::time()->getRequestTime();
+
+    $name = isset($_SERVER['HTTP_USER_AGENT']) ? substr($_SERVER['HTTP_USER_AGENT'], 0, 255) : 'unknown';
 
     $records[$id] = [
       'created' => $request_time,
