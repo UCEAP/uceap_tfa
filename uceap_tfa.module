@@ -6,20 +6,18 @@ use Drupal\Core\Form\FormStateInterface;
  * Implements hook_form_FORM_ID_alter().
  */
 function uceap_tfa_form_tfa_setup_alter(&$form, FormStateInterface $form_state, $form_id) {
+  $plugin_settings = \Drupal::config('tfa.settings')->get('login_plugin_settings');
+  $settings = $plugin_settings['uceap_tfa_trusted_browser'] ?? [];
   if ($form_state->get('step_method') == "tfa_totp") {
-    $site_settings = \Drupal::service('site_settings.loader');
-    if ($tfa_settings = $site_settings->loadByFieldset('portal_documentation')) {
-      $setup_instructions = !empty($tfa_settings['tfa_setup']) ? $tfa_settings['tfa_setup']["value"] : "<p>Missing instructions.</p>";
-      $form['apps'] = [
-        '#type' => 'html_tag',
-        '#tag' => 'h2',
-        '#value' => 'Setup MFA using your mobile device or other app',
-      ];
-      $form['info'] = [
-        '#type' => 'html_tag',
-        '#tag' => 'p',
-        '#value' => $setup_instructions,
-      ];
-    }
+    $form['apps'] = [
+      '#type' => 'html_tag',
+      '#tag' => 'h2',
+      '#value' => 'Setup MFA using your mobile device or other app',
+    ];
+    $form['info'] = [
+      '#type' => 'html_tag',
+      '#tag' => 'p',
+      '#value' => $settings['instructions_markup'] ?? 'Instructions missing',
+    ];
   }
 }

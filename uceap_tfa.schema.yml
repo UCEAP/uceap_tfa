@@ -1,0 +1,11 @@
+tfa.login.config.uceap_tfa_trusted_browser:
+  type: string
+  label: 'UCEAP TFA Trusted Browser'
+
+tfa.login.plugin.config.tfa_trusted_browser:
+  type: mapping
+  label: 'UCEAP TFA trusted browser plugin settings'
+  mapping:
+    instructions_markup:
+      type: string
+      label: 'HTML markup for instructions (e.g. a button to popup an overlay)'

@@ -4,5 +4,4 @@ description: UCEAP functionality for TFA
 core_version_requirement: ^9 || ^10
 package: UCEAP
 dependencies:
-  - drupal:site_settings
   - drupal:tfa

@@ -28,11 +28,24 @@ class TfaTrustedBrowser extends TfaBasePlugin implements TfaLoginInterface, TfaV
   const COOKIE_NAME = 'uceap-tfa-trusted-browser';
 
   /**
+   * The instructions markup.
+   *
+   * @var string
+   */
+  protected $instructionsMarkup;
+
+  /**
    * {@inheritdoc}
    */
   public function __construct(array $configuration, $plugin_id, $plugin_definition, UserDataInterface $user_data, EncryptionProfileManagerInterface $encryption_profile_manager, EncryptServiceInterface $encrypt_service) {
     parent::__construct($configuration, $plugin_id, $plugin_definition, $user_data, $encryption_profile_manager, $encrypt_service);
     $this->userData = $user_data;
+    $plugin_settings = \Drupal::config('tfa.settings')->get('login_plugin_settings');
+    $settings = $plugin_settings['uceap_tfa_trusted_browser'] ?? [];
+    $settings = array_replace([
+      'instructions_markup' => '<a class="button use-ajax" href="/setup-duo-tfa" data-dialog-type="dialog" data-dialog-renderer="off_canvas" data-dialog-options="{&quot;width&quot;:400}">Show Instructions</a>',
+    ], $settings);
+    $this->instructionsMarkup = $settings['instructions_markup'];
   }
 
   /**
@@ -78,14 +91,19 @@ class TfaTrustedBrowser extends TfaBasePlugin implements TfaLoginInterface, TfaV
    *   Form array specific for this validation plugin.
    */
   public function buildConfigurationForm(Config $config, array $state = []) {
-    $settings_form = [
+    return [
       'info' => [
         '#type' => 'html_tag',
         '#tag' => 'p',
         '#value' => 'Browsers will be remembered for 18 hours.',
       ],
+      'instructions_markup' => [
+        '#type' => 'textarea',
+        '#title' => $this->t('Instructions Markup'),
+        '#description' => $this->t('HTML markup for instructions (e.g. a button to popup an overlay)'),
+        '#value' => $this->instructionsMarkup,
+      ],
     ];
-    return $settings_form;
   }
 
   /**
