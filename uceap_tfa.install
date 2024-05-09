@@ -1,0 +1,18 @@
+<?php
+
+/**
+ * @file
+ * Installation related functions for UCEAP TFA module.
+ */
+
+/**
+ * Set default value for trusted browser instructions configuration.
+ */
+function uceap_tfa_install() {
+  $config = \Drupal::configFactory()->getEditable('tfa.settings');
+  $settings = $config->get('login_plugin_settings');
+  $settings['uceap_tfa_trusted_browser'] = [
+    'instructions_markup' => '<a class="button use-ajax" href="/setup-duo-tfa" data-dialog-type="dialog" data-dialog-renderer="off_canvas" data-dialog-options="{&quot;width&quot;:400}">Show Instructions</a>',
+  ];
+  $config->set('login_plugin_settings', $settings)->save();
+}
