@@ -43,7 +43,7 @@ class TfaTrustedBrowser extends TfaBasePlugin implements TfaLoginInterface, TfaV
     $plugin_settings = \Drupal::config('tfa.settings')->get('login_plugin_settings');
     $settings = $plugin_settings['uceap_tfa_trusted_browser'] ?? [];
     $settings = array_replace([
-      'instructions_markup' => 'Please contact the helpdesk if you need assistance.',
+      'instructions_markup' => '<a class="button use-ajax" href="/setup-duo-tfa" data-dialog-type="dialog" data-dialog-renderer="off_canvas" data-dialog-options="{&quot;width&quot;:400}">Show Instructions</a>',
     ], $settings);
     $this->instructionsMarkup = $settings['instructions_markup'];
   }
