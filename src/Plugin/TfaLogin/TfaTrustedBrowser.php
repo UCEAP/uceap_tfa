@@ -100,8 +100,8 @@ class TfaTrustedBrowser extends TfaBasePlugin implements TfaLoginInterface, TfaV
       'instructions_markup' => [
         '#type' => 'textarea',
         '#title' => $this->t('Instructions Markup'),
+        '#default_value' => $this->instructionsMarkup,
         '#description' => $this->t('HTML markup for instructions (e.g. a button to popup an overlay)'),
-        '#value' => $this->instructionsMarkup,
       ],
     ];
   }
