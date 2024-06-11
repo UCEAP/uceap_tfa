@@ -1,7 +1,6 @@
 <?php
 
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Component\Utility\Xss;
 
 /**
  * Implements hook_form_FORM_ID_alter().
@@ -19,7 +18,6 @@ function uceap_tfa_form_tfa_setup_alter(&$form, FormStateInterface $form_state, 
       '#type' => 'html_tag',
       '#tag' => 'p',
       '#value' => $settings['instructions_markup'] ?? 'Instructions missing',
-      '#allowed_tags' => array_merge(Xss::getAdminTagList(), ['script']),
     ];
   }
 }
